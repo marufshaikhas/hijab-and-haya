@@ -142,9 +142,12 @@
       // Links
       whatsappUrl: "https://wa.me/919137225602?text=Assalamu%20Alaikum%20Hijab%20%26%20Haya!%20I%20scanned%20your%20store%20QR.",
       instagramUrl: "https://www.instagram.com/hijab_and_haya_01/",
+      instagramAppUrl: "instagram://user?username=hijab_and_haya_01",
       instagramStoryAppUrl: "instagram://story?username=hijab_and_haya_01",
       instagramStoryWebUrl: "https://www.instagram.com/stories/hijab_and_haya_01/",
+      
       youtubeUrl: "https://www.youtube.com/@hijabandhaya",
+      youtubeAppUrl: "vnd.youtube://www.youtube.com/@hijabandhaya",
       
       googleSearchShopUrl: "https://www.google.com/search?q=HIJABandHAYA+shop+kurla+yt&sca_esv=fd88f76258bdd1cc&sxsrf=AKL5yDjdIrQfkThB8MFafqcqsEW0TlbQWg%3A1794983002521&ei=WkT9arKjH5mOseMPt4bvsQk&biw=1600&bih=832&uact=5&oq=HIJABandHAYA+shop+kurla+yt&gs_lp=Egxnd3Mtd2l6LXNlcnAiGkhJSkFCYW5kSEFZQSBzaG9wIGt1cmxhIHl0MgUQIRigATIFECEYoAEyBRAhGKABSLsGUIIBWNEFcAF4AJABAJgBwQGgAeoCqgEDMC4yuAEDyAEA-AEBmAIDoAKLA8ICCBAAGO8FGLADwgILEAAYgAQYogQYsAPCAgUQABjvBcICCBAAGIAEGKIEmAMAiAYBkAYFkgcFMS4xLjGgB4cGsgcFMC4xLjG4B4QDwgcFMi0yLjHIBxOACAE&sclient=gws-wiz-serp",
       googleReviewPopupUrl: "https://www.google.com/search?q=HIJABandHAYA+shop+kurla#lrd=0x3be7c9d232edb9c9:0xd1a0561d765121c1,3,,,,",
@@ -445,25 +448,49 @@
       document.getElementById("store-status").textContent = STORE_CONFIG.statusText;
 
       document.getElementById("whatsapp-hero-btn").href = STORE_CONFIG.whatsappUrl;
-      document.getElementById("instagram-card").href = STORE_CONFIG.instagramUrl;
+      
+      // Instagram Profile Card Smart App/Web Link Handler
+      const instaCard = document.getElementById("instagram-card");
+      instaCard.href = STORE_CONFIG.instagramUrl;
+      instaCard.addEventListener("click", (e) => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+          e.preventDefault();
+          window.location.href = STORE_CONFIG.instagramAppUrl;
+          setTimeout(() => {
+            window.open(STORE_CONFIG.instagramUrl, '_blank');
+          }, 500);
+        }
+      });
+
       document.getElementById("insta-handle").textContent = STORE_CONFIG.handle;
       document.getElementById("insta-stats").textContent = STORE_CONFIG.communityStats;
 
-      document.getElementById("youtube-card").href = STORE_CONFIG.youtubeUrl;
+      // YouTube Card Smart App/Web Link Handler
+      const youtubeCard = document.getElementById("youtube-card");
+      youtubeCard.href = STORE_CONFIG.youtubeUrl;
+      youtubeCard.addEventListener("click", (e) => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+          e.preventDefault();
+          window.location.href = STORE_CONFIG.youtubeAppUrl;
+          setTimeout(() => {
+            window.open(STORE_CONFIG.youtubeUrl, '_blank');
+          }, 500);
+        }
+      });
+
       document.getElementById("google-review-card").href = STORE_CONFIG.googleReviewPopupUrl;
 
-      // Smart Instagram Click Handler (Opens App directly on phones, fallback to web)
+      // Smart Instagram Story Click Handler (Opens App directly on phones, fallback to web)
       const logoLink = document.getElementById("logo-story-link");
       logoLink.href = STORE_CONFIG.instagramStoryWebUrl;
       
       logoLink.addEventListener("click", (e) => {
-        // Check if mobile device
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (isMobile) {
           e.preventDefault();
-          // Try opening Instagram app directly to story
           window.location.href = STORE_CONFIG.instagramStoryAppUrl;
-          // Fallback if app is not installed
           setTimeout(() => {
             window.open(STORE_CONFIG.instagramStoryWebUrl, '_blank');
           }, 500);
