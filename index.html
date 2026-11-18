@@ -150,7 +150,11 @@
       youtubeAppUrl: "vnd.youtube://www.youtube.com/@hijabandhaya",
       
       googleSearchShopUrl: "https://www.google.com/search?q=HIJABandHAYA+shop+kurla+yt&sca_esv=fd88f76258bdd1cc&sxsrf=AKL5yDjdIrQfkThB8MFafqcqsEW0TlbQWg%3A1794983002521&ei=WkT9arKjH5mOseMPt4bvsQk&biw=1600&bih=832&uact=5&oq=HIJABandHAYA+shop+kurla+yt&gs_lp=Egxnd3Mtd2l6LXNlcnAiGkhJSkFCYW5kSEFZQSBzaG9wIGt1cmxhIHl0MgUQIRigATIFECEYoAEyBRAhGKABSLsGUIIBWNEFcAF4AJABAJgBwQGgAeoCqgEDMC4yuAEDyAEA-AEBmAIDoAKLA8ICCBAAGO8FGLADwgILEAAYgAQYogQYsAPCAgUQABjvBcICCBAAGIAEGKIEmAMAiAYBkAYFkgcFMS4xLjGgB4cGsgcFMC4xLjG4B4QDwgcFMi0yLjHIBxOACAE&sclient=gws-wiz-serp",
+      
+      // Google Review Links (Web popup link + Mobile Maps direct link)
       googleReviewPopupUrl: "https://www.google.com/search?q=HIJABandHAYA+shop+kurla#lrd=0x3be7c9d232edb9c9:0xd1a0561d765121c1,3,,,,",
+      googleReviewAppUrl: "https://www.google.com/maps/place/Hijab+and+haya/@19.0705827,72.8778643,17z/data=!3m1!4b1!4m6!3m5!1s0x3be7c9d232edb9c9:0xd1a0561d765121c1!8m2!3d19.0705827!4d72.8778643?entry=ttu",
+
       directionsUrl: "https://www.google.com/maps/dir//Hijab+and+haya,+Shop+no+439%2F5,+Krishna+chowk,+New+Mill+Rd,+Ambedkar+Nagar,+Kurla+West,+Kurla,+Mumbai,+Maharashtra+400070/@19.0772781,72.8847663,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3be7c9d232edb9c9:0xd1a0561d765121c1!2m2!1d72.8778643!2d19.0705827?entry=ttu&g_ep=EgoyMDI2MTExNi4wIKXMDSoASAFQAw%3D%3D",
 
       // Store Address & Contact
@@ -480,7 +484,19 @@
         }
       });
 
-      document.getElementById("google-review-card").href = STORE_CONFIG.googleReviewPopupUrl;
+      // Google Review Card Smart Handler (Opens Maps app / listing directly on mobile, popup link on PC)
+      const googleReviewCard = document.getElementById("google-review-card");
+      googleReviewCard.href = STORE_CONFIG.googleReviewPopupUrl;
+      googleReviewCard.addEventListener("click", (e) => {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+          e.preventDefault();
+          window.location.href = STORE_CONFIG.googleReviewAppUrl;
+          setTimeout(() => {
+            window.open(STORE_CONFIG.googleReviewPopupUrl, '_blank');
+          }, 500);
+        }
+      });
 
       // Smart Instagram Story Click Handler (Opens App directly on phones, fallback to web)
       const logoLink = document.getElementById("logo-story-link");
@@ -502,7 +518,7 @@
       document.getElementById("directions-btn").href = STORE_CONFIG.directionsUrl;
 
       const callBtn = document.getElementById("call-store-btn");
-      callBtn.href = `tel:${STORE_CONFIG.phoneRaw}`;
+      callBtn.href = `tel:+919137225602`;
       document.getElementById("call-btn-label").textContent = `Call ${STORE_CONFIG.phoneDisplay}`;
 
       // 2. Toast Notification Helper
